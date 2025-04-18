@@ -4,6 +4,7 @@ import Footer from "./footer";
 import SearchFilters from "./search-filters";
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
+import { CustomCategory } from "./types";
 import { Category } from "@/payload-types";
 
 interface Props {
@@ -23,15 +24,16 @@ const Layout = async ({ children }: Props) => {
         exists: false,
       },
     },
+    sort: "slug",
   });
 
-  const formattedData = data.docs.map((doc) => ({
+  const formattedData: CustomCategory[] = data.docs.map((doc) => ({
     ...doc,
     subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
       ...(doc as Category),
     })),
   }));
-  console.log(data, formattedData);
+  // console.log(data, formattedData);
   return (
     <div className=" flex flex-col min-h-screen">
       <Navbar />

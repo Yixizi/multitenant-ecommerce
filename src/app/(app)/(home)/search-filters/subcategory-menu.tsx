@@ -2,10 +2,10 @@ import { cn } from "@/lib/utils";
 import { Category } from "@/payload-types";
 import Link from "next/link";
 import React from "react";
-import { CustomCategory } from "../types";
+import { CategoriesGetManyOutput } from "@/modules/types";
 
 interface Props {
-  category: CustomCategory;
+  category: CategoriesGetManyOutput[0];
   isOpen: boolean;
   position: { top: number; left: number };
 }
@@ -15,7 +15,6 @@ const SubcategoryMenu = ({ category, isOpen, position }: Props) => {
     return null;
 
   const backgroundColor = category.color || "#f5f5f5";
-  console.log(backgroundColor);
 
   return (
     <div

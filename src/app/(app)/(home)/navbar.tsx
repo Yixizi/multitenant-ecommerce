@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { NavbarSidebar } from "./navbar-sidebar";
 import { MenuIcon } from "lucide-react";
+import { webSiteName } from "@/contants";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -64,7 +65,7 @@ const Navbar = () => {
     <nav className=" bg-white h-14 flex lg:h-20 border-b justify-between font-medium">
       <Link href={"/"} className=" pl-6 flex items-center">
         <span className={cn("text-4xl font-semibold", poppins.className)}>
-          戏 · 销楼
+          {webSiteName}
         </span>
       </Link>
 

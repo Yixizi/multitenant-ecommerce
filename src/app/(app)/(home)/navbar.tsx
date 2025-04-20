@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 import { NavbarSidebar } from "./navbar-sidebar";
 import { MenuIcon } from "lucide-react";
 import { webSiteName } from "@/contants";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -61,6 +63,9 @@ const NavbarItems = [
 const Navbar = () => {
   const [isSiderbarOpen, setIsSiderbarOpen] = useState(false);
   const pathname = usePathname();
+  const trpc = useTRPC();
+  const session = useQuery(trpc.auth.session.queryOptions());
+  console.log(session.data);
   return (
     <nav className=" bg-white h-14 flex lg:h-20 border-b justify-between font-medium">
       <Link href={"/"} className=" pl-6 flex items-center">
@@ -86,23 +91,34 @@ const Navbar = () => {
           </NavbarItem>
         ))}
       </div>
-
-      <div className=" hidden lg:flex">
-        <Button
-          asChild
-          className="border-0 border-l  px-8 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg"
-          variant={"secondary"}
-        >
-          <Link href="/sign-in">登入</Link>
-        </Button>
-        <Button
-          asChild
-          className="border-0 border-l  px-8 h-full rounded-none bg-black text-white hover:text-black  hover:bg-pink-400 transition-colors text-lg"
-          variant={"secondary"}
-        >
-          <Link href="/sign-up">开始出售</Link>
-        </Button>
-      </div>
+      {session.data?.user ? (
+        <div className=" hidden lg:flex">
+          <Button
+            asChild
+            className="border-0 border-l  px-8 h-full rounded-none bg-black text-white hover:text-black  hover:bg-pink-400 transition-colors text-lg"
+            variant={"secondary"}
+          >
+            <Link href="/admin">仪表盘</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className=" hidden lg:flex">
+          <Button
+            asChild
+            className="border-0 border-l  px-8 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg"
+            variant={"secondary"}
+          >
+            <Link href="/sign-in">登入</Link>
+          </Button>
+          <Button
+            asChild
+            className="border-0 border-l  px-8 h-full rounded-none bg-black text-white hover:text-black  hover:bg-pink-400 transition-colors text-lg"
+            variant={"secondary"}
+          >
+            <Link href="/sign-up">开始出售</Link>
+          </Button>
+        </div>
+      )}
 
       <div className="flex lg:hidden items-center justify-center">
         <Button

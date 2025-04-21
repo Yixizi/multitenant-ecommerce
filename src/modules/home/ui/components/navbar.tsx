@@ -65,7 +65,7 @@ const Navbar = () => {
   const pathname = usePathname();
   const trpc = useTRPC();
   const session = useQuery(trpc.auth.session.queryOptions());
-  console.log(session.data);
+  // console.log(session.data);
   return (
     <nav className=" bg-white h-14 flex lg:h-20 border-b justify-between font-medium">
       <Link href={"/"} className=" pl-6 flex items-center">
@@ -75,6 +75,7 @@ const Navbar = () => {
       </Link>
 
       <NavbarSidebar
+        hasSession={session.data?.user ? true : false}
         open={isSiderbarOpen}
         onOpenChange={setIsSiderbarOpen}
         items={NavbarItems}

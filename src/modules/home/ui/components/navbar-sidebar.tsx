@@ -13,12 +13,18 @@ interface NavbarItem {
 }
 
 interface Props {
+  hasSession: boolean;
   items: NavbarItem[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
+export const NavbarSidebar = ({
+  items,
+  open,
+  onOpenChange,
+  hasSession,
+}: Props) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="left" className=" p-0 transform-none">
@@ -40,22 +46,33 @@ export const NavbarSidebar = ({ items, open, onOpenChange }: Props) => {
           })}
 
           <div className=" border-t">
-            <Link
-              prefetch
-              href={"/sign-in"}
-              onClick={() => onOpenChange(false)}
-              className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
-            >
-              登入
-            </Link>
-            <Link
-              prefetch
-              onClick={() => onOpenChange(false)}
-              href={"/sign-up"}
-              className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
-            >
-              申请销售
-            </Link>
+            {hasSession ? (
+              <Link
+                className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
+                href="/admin"
+              >
+                仪表盘
+              </Link>
+            ) : (
+              <>
+                <Link
+                  prefetch
+                  href={"/sign-in"}
+                  onClick={() => onOpenChange(false)}
+                  className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
+                >
+                  登入
+                </Link>
+                <Link
+                  prefetch
+                  onClick={() => onOpenChange(false)}
+                  href={"/sign-up"}
+                  className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
+                >
+                  申请销售
+                </Link>
+              </>
+            )}
           </div>
         </ScrollArea>
       </SheetContent>

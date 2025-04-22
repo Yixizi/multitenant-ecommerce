@@ -24,7 +24,11 @@ const Layout = async ({ children }: Props) => {
           <SearchFilters />
         </Suspense>
       </HydrationBoundary>
-      <div className=" flex-1 bg-[#f4f4f0]">{children}</div>
+      <div className=" flex-1  bg-[#f4f4f0] ">
+        {/* <div className="max-h-full overflow-auto"> */}
+        {children}
+        {/* </div> */}
+      </div>
       <Footer />
     </div>
   );

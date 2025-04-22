@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   CategoriesGetManyOutput,
   // CategoriesGetManyOutputSingle,
-} from "@/modules/types";
+} from "@/modules/categories/types";
 
 interface CategoriesSidebarProps {
   open: boolean;

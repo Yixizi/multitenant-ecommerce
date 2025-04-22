@@ -32,7 +32,7 @@ const SearchFilters = () => {
   return (
     <div
       style={{ backgroundColor: activeCategoryColor }}
-      className=" px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full"
+      className=" px-4 lg:px-12 py-4 border-b flex flex-col gap-3 w-full"
     >
       <SearchInput />
       <div className=" hidden lg:block">

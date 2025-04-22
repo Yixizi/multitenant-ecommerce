@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Category } from "@/payload-types";
 import Link from "next/link";
 import React from "react";
-import { CategoriesGetManyOutput } from "@/modules/types";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 interface Props {
   category: CategoriesGetManyOutput[0];

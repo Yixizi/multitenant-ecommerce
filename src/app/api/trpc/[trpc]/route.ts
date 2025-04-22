@@ -1,3 +1,4 @@
+// export const fetchCache = "force-no-store";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { createTRPCContext } from "@/trpc/init";
 import { appRouter } from "@/trpc/routers/_app";

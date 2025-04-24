@@ -37,12 +37,12 @@ export const ProductFilters = () => {
   const hasAnyFilters = Object.entries(filters).some(([key, value]) => {
     if (key === "sort") return false;
 
-    if (typeof value === "string") {
-      return value !== "";
-    }
-
     if (Array.isArray(value)) {
       return value.length > 0;
+    }
+
+    if (typeof value === "string") {
+      return value !== "";
     }
 
     return value !== null;

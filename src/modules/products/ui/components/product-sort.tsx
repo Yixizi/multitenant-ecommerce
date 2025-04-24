@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 
 const ProductSort = () => {
   const [filters, setFilters] = useProductFilters();
+
+  // console.log(filters.sort);
   return (
     <div className=" flex items-center gap-2">
       <Button
@@ -18,7 +20,7 @@ const ProductSort = () => {
         variant={"secondary"}
         onClick={() => setFilters({ sort: "curated" })}
       >
-        热门
+        精选
       </Button>
       <Button
         size={"sm"}
@@ -30,7 +32,7 @@ const ProductSort = () => {
         variant={"secondary"}
         onClick={() => setFilters({ sort: "trending" })}
       >
-        精选
+        热门
       </Button>
       <Button
         size={"sm"}

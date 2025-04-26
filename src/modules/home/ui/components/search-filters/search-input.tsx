@@ -38,9 +38,9 @@ const SearchInput = ({ disabled }: Props) => {
 
       {session.data?.user && (
         <Button asChild variant={"elevated"}>
-          <Link href={"/library"}>
+          <Link prefetch href={"/library"}>
             <BookmarkCheckIcon />
-            图书馆
+            账单库
           </Link>
         </Button>
       )}

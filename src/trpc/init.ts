@@ -4,6 +4,7 @@ import { cache } from "react";
 import config from "@payload-config";
 import superjson from "superjson";
 import { headers as getHeaders } from "next/headers";
+// import { redirect } from "next/navigation";
 export const createTRPCContext = cache(async () => {
   /**
    * @see: https://trpc.io/docs/server/context

@@ -109,7 +109,9 @@ const Navbar = () => {
             className="border-0 border-l  px-8 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg"
             variant={"secondary"}
           >
-            <Link href="/sign-in">登入</Link>
+            <Link prefetch href="/sign-in">
+              登入
+            </Link>
           </Button>
           <Button
             asChild

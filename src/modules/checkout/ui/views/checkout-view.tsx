@@ -1,7 +1,7 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCart } from "../../hooks/use-cart";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ interface Props {
 
 const CheckoutView = ({ tenantSlug }: Props) => {
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [states, setStates] = useCheckoutStates();
   const { productIds, removeProduct, clearCart } = useCart(tenantSlug);
@@ -47,10 +48,17 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     if (states.success) {
       setStates({ success: false, cancel: false });
       clearCart();
-
+      queryClient.invalidateQueries(trpc.library.getMany.infiniteQueryFilter());
       router.push("/products");
     }
-  }, [states.success, clearCart, router, setStates]);
+  }, [
+    states.success,
+    clearCart,
+    router,
+    setStates,
+    queryClient,
+    trpc.library.getMany,
+  ]);
 
   useEffect(() => {
     if (!error) {
@@ -114,6 +122,32 @@ const CheckoutView = ({ tenantSlug }: Props) => {
             isCanceled={states.cancel}
             disabled={purchase.isPending}
           />
+          <div className=" p-5">
+            <p className=" pb-5">此为练习项目，使用付款沙盒作为测试</p>
+            <div>
+              输入
+              <p
+                className=" underline inline-block cursor-pointer "
+                onClick={() => {
+                  try {
+                    navigator.clipboard.writeText("4242 4242 4242 4242");
+                    toast.error("复制成功");
+                  } catch (error) {
+                    toast.error("复制失败");
+                    console.log(
+                      JSON.stringify(error, null, 2) || "卡号复制失败",
+                    );
+                  }
+                }}
+              >
+                4242 4242 4242 4242
+              </p>
+              卡号
+            </div>
+            <div>输入卡到期的任何未来日期 如 12/34 </div>
+            <div>输入任意3位 CVC 号码 如 123</div>
+            <div>输入任意帐单邮政编码 如 94103</div>
+          </div>
         </div>
       </div>
     </div>

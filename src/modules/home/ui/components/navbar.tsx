@@ -99,7 +99,9 @@ const Navbar = () => {
             className="border-0 border-l  px-8 h-full rounded-none bg-black text-white hover:text-black  hover:bg-pink-400 transition-colors text-lg"
             variant={"secondary"}
           >
-            <Link href="/admin">仪表盘</Link>
+            <Link prefetch href="/admin">
+              仪表盘
+            </Link>
           </Button>
         </div>
       ) : (

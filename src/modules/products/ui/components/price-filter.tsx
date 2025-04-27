@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface Props {
   minPrice?: string | null;
@@ -37,13 +37,31 @@ export const PriceFilter = ({
   onMaxPriceChange,
   onMinPriceChange,
 }: Props) => {
+  const [minPriceInput, setMinPriceInput] = useState(minPrice ?? "");
+  const [maxPriceInput, setMaxPriceInput] = useState(maxPrice ?? "");
   const handleMinPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/[^0-9.]/g, "");
+    // console.log(numericValue);
+    setMinPriceInput(numericValue);
     onMinPriceChange(numericValue);
   };
   const handleMaxPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/[^0-9.]/g, "");
+    // console.log(numericValue);
+    setMaxPriceInput(numericValue);
     onMaxPriceChange(numericValue);
+  };
+
+  const handleMinPriceBlur = () => {
+    const formattedValue = formatAsCurrency(minPriceInput);
+    setMinPriceInput(formattedValue); // Only format on blur
+    onMinPriceChange(formattedValue.replace(/[^0-9.]/g, "")); // Save raw numeric value
+  };
+
+  const handleMaxPriceBlur = () => {
+    const formattedValue = formatAsCurrency(maxPriceInput);
+    setMaxPriceInput(formattedValue); // Only format on blur
+    onMaxPriceChange(formattedValue.replace(/[^0-9.]/g, "")); // Save raw numeric value
   };
   return (
     <div className=" flex flex-col gap-2">
@@ -52,10 +70,9 @@ export const PriceFilter = ({
         <Input
           type="text"
           placeholder="￥0"
-          value={minPrice ? formatAsCurrency(minPrice) : ""}
-          onChange={(e) => {
-            handleMinPriceChange(e);
-          }}
+          value={minPriceInput}
+          onChange={handleMinPriceChange}
+          onBlur={handleMinPriceBlur}
         />
       </div>
       <div className=" flex flex-col gap2">
@@ -63,10 +80,9 @@ export const PriceFilter = ({
         <Input
           type="text"
           placeholder="∞"
-          value={maxPrice ? formatAsCurrency(maxPrice) : ""}
-          onChange={(e) => {
-            handleMaxPriceChange(e);
-          }}
+          value={maxPriceInput}
+          onChange={handleMaxPriceChange}
+          onBlur={handleMaxPriceBlur}
         />
       </div>
     </div>

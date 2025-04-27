@@ -50,6 +50,7 @@ export const NavbarSidebar = ({
               <Link
                 className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
                 href="/admin"
+                prefetch
               >
                 仪表盘
               </Link>

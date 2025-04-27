@@ -43,6 +43,8 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
       </div>
     );
   }
+
+  // console.log(JSON.stringify(data, null, 2));
   return (
     <>
       <div
@@ -62,8 +64,8 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
               tenantSlug={product.tenant.slug}
               tenantName={product.tenant.name}
               tenantImageUrl={product.tenant.image?.url}
-              reviewCount={5}
-              reviewRating={3}
+              reviewCount={product.reviewCount}
+              reviewRating={product.reviewRating}
               price={product.price}
             />
           ))}

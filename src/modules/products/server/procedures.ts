@@ -22,6 +22,7 @@ export const productsRouter = createTRPCRouter({
         collection: "products",
         id: input.id,
         depth: 2,
+
       });
       // console.log(JSON.stringify(product, null, 2));
       let isPurchased = false;
@@ -49,11 +50,71 @@ export const productsRouter = createTRPCRouter({
         isPurchased = !!orderData.docs[0];
       }
 
+      const reviews = await ctx.db.find({
+        collection: "reviews",
+        pagination: false,
+        where: {
+          product: {
+            equals: input.id,
+          },
+        },
+      });
+
+      // console.log(JSON.stringify(reviews, null, 2));
+
+      const reviewRating =
+        reviews.docs.length > 0
+          ? Number(
+              Intl.NumberFormat("zh-CH", {
+                maximumFractionDigits: 1,
+                minimumFractionDigits: 1,
+              }).format(
+                reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
+                  reviews.totalDocs,
+              ),
+            )
+          : 0;
+
+      const ratingDistribution: Record<number, number> = {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0,
+      };
+
+      if (reviews.totalDocs > 0) {
+        reviews.docs.forEach((review) => {
+          const rating = review.rating;
+
+          if (rating >= 1 && rating <= 5) {
+            ratingDistribution[rating] = (ratingDistribution[rating] || 0) + 1;
+          }
+        });
+
+        Object.keys(ratingDistribution).forEach((key) => {
+          const rating = Number(key);
+          const count = ratingDistribution[rating] || 0;
+
+          ratingDistribution[rating] = Number(
+            Intl.NumberFormat("zh-CH", {
+              maximumFractionDigits: 1,
+              minimumFractionDigits: 1,
+            }).format((count / reviews.totalDocs) * 100),
+          );
+        });
+        // console.log(ratingDistribution);
+      }
+
+      // console.log(ratingDistribution);
       return {
         ...product,
         isPurchased,
         image: product.image as Media | null,
         tenant: product.tenant as Tenant & { image: Media | null },
+        reviewRating,
+        reviewCount: reviews.totalDocs,
+        ratingDistribution,
       };
     }),
   getMany: baseProcedure
@@ -162,13 +223,51 @@ export const productsRouter = createTRPCRouter({
         sort,
         page: input.cursor,
         limit: input.limit,
+        select: {
+          content: false,
+        },
       });
-
       // console.log(JSON.stringify(data, null, 2));
+
+      const dataWithSummariedReviews = await Promise.all(
+        data.docs.map(async (doc) => {
+          const reviewsData = await ctx.db.find({
+            collection: "reviews",
+            pagination: false,
+            where: {
+              product: {
+                equals: doc.id,
+              },
+            },
+          });
+
+          // console.log(doc.id, JSON.stringify(reviewsData, null, 2));
+
+          return {
+            ...doc,
+            reviewCount: reviewsData.totalDocs,
+            reviewRating:
+              reviewsData.docs.length === 0
+                ? 0
+                : Number(
+                    Intl.NumberFormat("zh-CH", {
+                      maximumFractionDigits: 1,
+                      minimumFractionDigits: 1,
+                    }).format(
+                      reviewsData.docs.reduce(
+                        (acc, review) => acc + review.rating,
+                        0,
+                      ) / reviewsData.totalDocs,
+                    ),
+                  ),
+          };
+        }),
+      );
+      // console.log(JSON.stringify(dataWithSummariedReviews, null, 2));
 
       return {
         ...data,
-        docs: data.docs.map((item) => ({
+        docs: dataWithSummariedReviews.map((item) => ({
           ...item,
           image: item.image as Media | null,
           tenant: item.tenant as Tenant & { image: Media | null },

@@ -41,12 +41,14 @@ const ProductView = ({ productId }: Props) => {
           </div>
 
           <div className="lg:col-span-5">
-            <p className=" font-medium italic text-muted-foreground">
-              没有特殊内容
-            </p>
+            {data.content ? (
+              <p>{data.content}</p>
+            ) : (
+              <p className=" font-medium italic text-muted-foreground">
+                没有特殊内容
+              </p>
+            )}
           </div>
-          <div></div>
-          <div></div>
         </div>
       </section>
     </div>

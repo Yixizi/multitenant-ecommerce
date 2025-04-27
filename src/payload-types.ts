@@ -169,6 +169,9 @@ export interface Tenant {
    */
   slug: string;
   image?: (string | null) | Media;
+  /**
+   * Stripe账户ID已关联你的商店
+   */
   stripeAccountId: string;
   /**
    * 提交Stripe详情后可创建产品
@@ -231,6 +234,10 @@ export interface Product {
   tags?: (string | Tag)[] | null;
   image?: (string | null) | Media;
   refundPolicy?: ('30-day' | '14-day' | '7-day' | '3-day' | '1-day' | 'no-refunds') | null;
+  /**
+   * 此内容仅在购买后可见,添加产品信息,可下载的文件，获取指导以及额外的材料，支持Markdown转换
+   */
+  content?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -254,6 +261,9 @@ export interface Order {
   name: string;
   user: string | User;
   product: string | Product;
+  /**
+   * 与订单关联的 Stripe 结账会话
+   */
   stripeCheckoutSessionId: string;
   updatedAt: string;
   createdAt: string;
@@ -419,6 +429,7 @@ export interface ProductsSelect<T extends boolean = true> {
   tags?: T;
   image?: T;
   refundPolicy?: T;
+  content?: T;
   updatedAt?: T;
   createdAt?: T;
 }

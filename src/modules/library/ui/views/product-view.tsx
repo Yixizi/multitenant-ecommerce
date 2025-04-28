@@ -1,10 +1,11 @@
 "use client";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import ReviewSidebar from "../components/review-sidebar";
+import { ReviewFormSkeleton } from "../components/review-form";
 
 interface Props {
   productId: string;
@@ -36,7 +37,9 @@ const ProductView = ({ productId }: Props) => {
         <div className=" grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">
           <div className="lg:col-span-2">
             <div className=" p-4 bg-white rounded-md border gap-4">
-              <ReviewSidebar productId={productId} />
+              <Suspense fallback={<ReviewFormSkeleton />}>
+                <ReviewSidebar productId={productId} />
+              </Suspense>
             </div>
           </div>
 
@@ -56,3 +59,16 @@ const ProductView = ({ productId }: Props) => {
 };
 
 export default ProductView;
+
+export const ProductViewSkeleton = () => {
+  return (
+    <div className=" min-h-screen bg-white">
+      <nav className=" p-4 bg-[#f4f4f0] w-full border-b">
+        <Link prefetch href={"/library"} className=" flex items-center gap-2">
+          <ArrowLeftIcon className="size-4" />
+          <span className=" text font-medium ">回到账单库列表</span>
+        </Link>
+      </nav>
+    </div>
+  );
+};

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { sortValues } from "../search-params";
 import { DEFAULT_LIMIT } from "@/contants";
 import { headers as getHeaders } from "next/headers";
+import { TRPCError } from "@trpc/server";
 
 export const productsRouter = createTRPCRouter({
   getOne: baseProcedure
@@ -22,8 +23,17 @@ export const productsRouter = createTRPCRouter({
         collection: "products",
         id: input.id,
         depth: 2,
-
+        select: {
+          content: false,
+        },
       });
+
+      if (product.isArchived) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "产品未找到",
+        });
+      }
       // console.log(JSON.stringify(product, null, 2));
       let isPurchased = false;
       if (session.user) {
@@ -65,9 +75,10 @@ export const productsRouter = createTRPCRouter({
       const reviewRating =
         reviews.docs.length > 0
           ? Number(
-              Intl.NumberFormat("zh-CH", {
+              Intl.NumberFormat("zh-CN", {
                 maximumFractionDigits: 1,
                 minimumFractionDigits: 1,
+                useGrouping: false,
               }).format(
                 reviews.docs.reduce((acc, review) => acc + review.rating, 0) /
                   reviews.totalDocs,
@@ -97,8 +108,9 @@ export const productsRouter = createTRPCRouter({
           const count = ratingDistribution[rating] || 0;
 
           ratingDistribution[rating] = Number(
-            Intl.NumberFormat("zh-CH", {
+            Intl.NumberFormat("zh-CN", {
               maximumFractionDigits: 1,
+              useGrouping: false,
               minimumFractionDigits: 1,
             }).format((count / reviews.totalDocs) * 100),
           );
@@ -132,7 +144,9 @@ export const productsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const where: Where = {
-        price: {},
+        isArchived: {
+          not_equals: true,
+        },
       };
 
       // console.log(input, "----------");
@@ -169,6 +183,9 @@ export const productsRouter = createTRPCRouter({
         where["tenant.slug"] = {
           equals: input.tenantSlug,
         };
+      } else {
+        //仅展示在个人商店
+        where["isPrivate"] = { not_equals: true };
       }
 
       if (input.categorySlug) {
@@ -250,8 +267,9 @@ export const productsRouter = createTRPCRouter({
               reviewsData.docs.length === 0
                 ? 0
                 : Number(
-                    Intl.NumberFormat("zh-CH", {
+                    Intl.NumberFormat("zh-CN", {
                       maximumFractionDigits: 1,
+                      useGrouping: false,
                       minimumFractionDigits: 1,
                     }).format(
                       reviewsData.docs.reduce(

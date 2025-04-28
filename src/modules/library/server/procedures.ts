@@ -111,9 +111,10 @@ export const libraryRouter = createTRPCRouter({
               reviewsData.docs.length === 0
                 ? 0
                 : Number(
-                    Intl.NumberFormat("zh-CH", {
+                    Intl.NumberFormat("zh-CN", {
                       maximumFractionDigits: 1,
                       minimumFractionDigits: 1,
+                      useGrouping: false,
                     }).format(
                       reviewsData.docs.reduce(
                         (acc, review) => acc + review.rating,

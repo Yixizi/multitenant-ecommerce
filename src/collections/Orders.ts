@@ -40,5 +40,12 @@ export const Orders: CollectionConfig = {
         description: "与订单关联的 Stripe 结账会话",
       },
     },
+    {
+      name: "stripeAccountId",
+      type: "text",
+      admin: {
+        description: "与订单关联的 Stripe 账户",
+      },
+    },
   ],
 };

@@ -10,8 +10,49 @@ import type Stripe from "stripe";
 import { z } from "zod";
 import { CheckoutMetadata, ProductMetadata } from "../types";
 import { stripe } from "@/lib/stripe";
+import { generateTenantURL } from "@/lib/utils";
 
 export const checkoutRouter = createTRPCRouter({
+  verify: protectedProcedure.mutation(async ({ ctx }) => {
+    const user = await ctx.db.findByID({
+      collection: "users",
+      id: ctx.session.user.id,
+      depth: 0, //id
+    });
+
+    if (!user) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "未找到用户" });
+    }
+
+    const tenantId = user.tenants?.[0]?.tenant as string;
+
+    const tenant = await ctx.db.findByID({
+      collection: "tenants",
+      id: tenantId,
+    });
+
+    if (!tenant) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "租户未找到",
+      });
+    }
+
+    const accountLink = await stripe.accountLinks.create({
+      account: tenant.stripeAccountId,
+      refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/admin`,
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL}/admin`,
+      type: "account_onboarding",
+    });
+
+    if (!accountLink.url) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "创建验证链接失败",
+      });
+    }
+    return { url: accountLink.url };
+  }),
   purchase: protectedProcedure
     .input(
       z.object({
@@ -35,12 +76,19 @@ export const checkoutRouter = createTRPCRouter({
                 equals: input.tenantSlug,
               },
             },
+            {
+              isArchived: {
+                not_equals: true,
+              },
+            },
           ],
         },
       });
 
+      console.log(products.totalDocs, input.productIds.length);
+
       if (products.totalDocs !== input.productIds.length) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "产品未找到" });
+        throw new TRPCError({ code: "NOT_FOUND", message: "有产品未找到" });
       }
       const tenantsData = await ctx.db.find({
         collection: "tenants",
@@ -61,6 +109,12 @@ export const checkoutRouter = createTRPCRouter({
         });
       }
 
+      if (!tenant.stripeDetailsSubmitted) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "租户未被允许售卖产品",
+        });
+      }
       const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
         products.docs.map((product) => {
           return {
@@ -81,19 +135,42 @@ export const checkoutRouter = createTRPCRouter({
           };
         });
 
-      const checkout = await stripe.checkout.sessions.create({
-        customer_email: ctx.session.user.email,
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?success=true`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?cancel=false `,
-        mode: "payment",
-        line_items: lineItems,
-        invoice_creation: {
-          enabled: true,
+      const totalAmount = products.docs.reduce(
+        (acc, item) => acc + item.price * 100,
+        0,
+      );
+
+      const platformFeePercent = Math.trunc(totalAmount / 100);
+
+      const  domain = generateTenantURL(input.tenantSlug);
+
+      // if (process.env.NODE_ENV === "development") {
+      //   domain = `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}`;
+      // } else {
+      //   domain = `${input.tenantSlug}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+      // }
+
+      const checkout = await stripe.checkout.sessions.create(
+        {
+          customer_email: ctx.session.user.email,
+          success_url: `${domain}/checkout?success=true`,
+          cancel_url: `${domain}/checkout?cancel=false `,
+          mode: "payment",
+          line_items: lineItems,
+          invoice_creation: {
+            enabled: true,
+          },
+          metadata: {
+            userId: ctx.session.user.id,
+          } as CheckoutMetadata,
+          payment_intent_data: {
+            application_fee_amount: platformFeePercent,
+          },
         },
-        metadata: {
-          userId: ctx.session.user.id,
-        } as CheckoutMetadata,
-      });
+        {
+          stripeAccount: tenant.stripeAccountId,
+        },
+      );
 
       if (!checkout.url) {
         throw new TRPCError({
@@ -115,9 +192,18 @@ export const checkoutRouter = createTRPCRouter({
         collection: "products",
         depth: 2,
         where: {
-          id: {
-            in: input.ids,
-          },
+          and: [
+            {
+              id: {
+                in: input.ids,
+              },
+            },
+            {
+              isArchived: {
+                not_equals: true,
+              },
+            },
+          ],
         },
       });
 
@@ -131,6 +217,8 @@ export const checkoutRouter = createTRPCRouter({
 
         return acc + (isNaN(price) ? 0 : price);
       }, 0);
+
+      // console.log(data.totalDocs);
 
       return {
         ...data,

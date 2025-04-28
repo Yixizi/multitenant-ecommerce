@@ -36,6 +36,7 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
   const { data } = useSuspenseQuery(
     trpc.products.getOne.queryOptions({ id: productId }),
   );
+  console.log("1");
   return (
     <div className=" px-4 lg:px-12 py-10">
       <div className=" border rounded-sm bg-white overflow-hidden">
@@ -179,3 +180,20 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
 };
 
 export default ProductView;
+
+export const ProductViewSkeleton = () => {
+  return (
+    <div className=" px-4 lg:px-12 py-10">
+      <div className=" border rounded-sm bg-white overflow-hidden">
+        <div className=" relative aspect-[3.9] border-b">
+          <Image
+            src={"/auth-bg.png"}
+            fill
+            className=" object-cover"
+            alt={"占位符"}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};

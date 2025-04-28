@@ -12,10 +12,11 @@ export const Products: CollectionConfig = {
       return Boolean(tenant?.stripeDetailsSubmitted);
     },
     // update: ({ req }) => isSuperAdmin(req.user),
-    // delete: ({ req }) => isSuperAdmin(req.user),
+    delete: ({ req }) => isSuperAdmin(req.user),
   },
   admin: {
     useAsTitle: "name",
+    description: "在创建产品前你必须验证账户",
   },
   fields: [
     {
@@ -60,10 +61,28 @@ export const Products: CollectionConfig = {
     },
     {
       name: "content",
-      type: "textarea",
+      type: "text",
       admin: {
         description:
           "此内容仅在购买后可见,添加产品信息,可下载的文件，获取指导以及额外的材料，支持Markdown转换",
+      },
+    },
+    {
+      name: "isPrivate",
+      label: "私密",
+      defaultValue: false,
+      type: "checkbox",
+      admin: {
+        description: "仅展示在个人商店",
+      },
+    },
+    {
+      name: "isArchived",
+      label: "归档",
+      defaultValue: false,
+      type: "checkbox",
+      admin: {
+        description: "选择你想要归档的产品",
       },
     },
   ],

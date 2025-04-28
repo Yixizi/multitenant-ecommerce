@@ -156,3 +156,25 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ productId, initialData }) => {
 };
 
 export default ReviewForm;
+
+export const ReviewFormSkeleton = () => {
+  return (
+    <form className=" flex flex-col gap-y-4">
+      <p className=" font-medium">喜欢它?给它星星</p>
+
+      <Textarea placeholder="请留下你的回复" disabled />
+
+      <StarPicker disable />
+
+      <Button
+        variant={"elevated"}
+        type="button"
+        size={"lg"}
+        disabled
+        className="bg-black text-white hover:bg-pink-400 hover:text-primary w-fit"
+      >
+        添加回复
+      </Button>
+    </form>
+  );
+};

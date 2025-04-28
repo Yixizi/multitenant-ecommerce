@@ -23,9 +23,10 @@ export const formatAsCurrency = (value: string) => {
 
   const numberValue = parseFloat(formattedValue);
   if (isNaN(numberValue)) return "";
-  return new Intl.NumberFormat("zh-Ch", {
+  return new Intl.NumberFormat("zh-CN", {
     style: "currency",
     currency: "CNY",
+    // useGrouping: false,
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(numberValue);

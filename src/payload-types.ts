@@ -218,6 +218,8 @@ export interface Category {
   createdAt: string;
 }
 /**
+ * 在创建产品前你必须验证账户
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
  */
@@ -238,6 +240,14 @@ export interface Product {
    * 此内容仅在购买后可见,添加产品信息,可下载的文件，获取指导以及额外的材料，支持Markdown转换
    */
   content?: string | null;
+  /**
+   * 仅展示在个人商店
+   */
+  isPrivate?: boolean | null;
+  /**
+   * 选择你想要归档的产品
+   */
+  isArchived?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -265,6 +275,10 @@ export interface Order {
    * 与订单关联的 Stripe 结账会话
    */
   stripeCheckoutSessionId: string;
+  /**
+   * 与订单关联的 Stripe 账户
+   */
+  stripeAccountId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -430,6 +444,8 @@ export interface ProductsSelect<T extends boolean = true> {
   image?: T;
   refundPolicy?: T;
   content?: T;
+  isPrivate?: T;
+  isArchived?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -465,6 +481,7 @@ export interface OrdersSelect<T extends boolean = true> {
   user?: T;
   product?: T;
   stripeCheckoutSessionId?: T;
+  stripeAccountId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

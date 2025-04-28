@@ -81,7 +81,9 @@ const CheckoutView = ({ tenantSlug }: Props) => {
     );
   }
 
-  if (data?.totalDocs === 0) {
+  console.log(data);
+
+  if (data?.totalDocs === 0 || !data?.totalDocs) {
     return (
       <div className=" lg:pt-16 pt-4 px-4 lg:px-12">
         <div className=" border border-black border-dashed flex items-center justify-center p-8 flex-col gap-y-4 bg-white w-full rounded-lg">
@@ -91,6 +93,8 @@ const CheckoutView = ({ tenantSlug }: Props) => {
       </div>
     );
   }
+
+  // console.log(data?.totalDocs);
   return (
     <div className=" lg:pt-16 pt-4 px-4 lg:px-12">
       <div className=" grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-16">

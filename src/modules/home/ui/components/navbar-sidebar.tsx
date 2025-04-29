@@ -35,6 +35,7 @@ export const NavbarSidebar = ({
           {items.map((item) => {
             return (
               <Link
+              prefetch
                 onClick={() => onOpenChange(false)}
                 key={item.href}
                 href={item.href}

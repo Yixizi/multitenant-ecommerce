@@ -45,10 +45,10 @@ const CheckoutItem = ({
 
       <div className=" py-4 flex flex-col justify-between">
         <div>
-          <Link href={productUrl}>
+          <Link prefetch href={productUrl}>
             <h4 className=" font-bold underline">{name}</h4>
           </Link>
-          <Link href={tenantUrl}>
+          <Link prefetch href={tenantUrl}>
             <h4 className=" font-bold underline">{tenantName}</h4>
           </Link>
         </div>

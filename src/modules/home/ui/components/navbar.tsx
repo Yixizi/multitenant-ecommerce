@@ -32,7 +32,7 @@ const NavbarItem = ({ children, href, isActive }: NavbarItemProps) => {
         isActive && "bg-black text-white hover:bg-black hover:text-white",
       )}
     >
-      <Link href={href}>{children}</Link>
+      <Link prefetch href={href}>{children}</Link>
     </Button>
   );
 };
@@ -68,7 +68,7 @@ const Navbar = () => {
 
   return (
     <nav className=" bg-white h-14 flex lg:h-20 border-b justify-between font-medium">
-      <Link href={"/"} className=" pl-6 flex items-center">
+      <Link prefetch href={"/"} className=" pl-6 flex items-center">
         <span className={cn("text-4xl font-semibold", poppins.className)}>
           {webSiteName}
         </span>
@@ -120,7 +120,7 @@ const Navbar = () => {
             className="border-0 border-l  px-8 h-full rounded-none bg-black text-white hover:text-black  hover:bg-pink-400 transition-colors text-lg"
             variant={"secondary"}
           >
-            <Link href="/sign-up">开始出售</Link>
+            <Link prefetch href="/sign-up">开始出售</Link>
           </Button>
         </div>
       )}

@@ -13,7 +13,7 @@ const TenantsFooter = () => {
     <footer className=" border-b font-medium bg-white">
       <div className=" max-w-(--breakpoint-xl)  mx-auto flex gap-2 items-center h-full px-4 py-4 lg:px-12">
         <p>由</p>
-        <Link href={process.env.NEXT_PUBLIC_APP_URL!}>
+        <Link href={process.env.NEXT_PUBLIC_APP_URL!} prefetch>
           <span className={cn("text-2xl font-medium", poppins.className)}>
             {webSiteName}
           </span>

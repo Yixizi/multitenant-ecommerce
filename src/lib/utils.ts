@@ -6,11 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateTenantURL(tenantSlug: string) {
-  const isDevelopment = process.env.NODE_ENV === "development";
+  // const isDevelopment = process.env.NODE_ENV === "development";
   const isSubdomainRoutingEnabled = Boolean(
-    process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING!,
+    process.env.NEXT_PUBLIC_ENABLE_SUBDOMAIN_ROUTING == true,
   );
-  if (isDevelopment || !isSubdomainRoutingEnabled) {
+
+  if (!isSubdomainRoutingEnabled) {
     return `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${tenantSlug}`;
   }
 

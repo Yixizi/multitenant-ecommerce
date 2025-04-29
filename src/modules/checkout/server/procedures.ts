@@ -85,8 +85,6 @@ export const checkoutRouter = createTRPCRouter({
         },
       });
 
-
-
       if (products.totalDocs !== input.productIds.length) {
         throw new TRPCError({ code: "NOT_FOUND", message: "有产品未找到" });
       }
@@ -142,7 +140,7 @@ export const checkoutRouter = createTRPCRouter({
 
       const platformFeePercent = Math.trunc(totalAmount / 100);
 
-      const  domain = generateTenantURL(input.tenantSlug);
+      const domain = generateTenantURL(input.tenantSlug);
 
       // if (process.env.NODE_ENV === "development") {
       //   domain = `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}`;
@@ -156,6 +154,7 @@ export const checkoutRouter = createTRPCRouter({
           success_url: `${domain}/checkout?success=true`,
           cancel_url: `${domain}/checkout?cancel=false `,
           mode: "payment",
+          payment_method_types: ["card"],
           line_items: lineItems,
           invoice_creation: {
             enabled: true,
@@ -216,8 +215,6 @@ export const checkoutRouter = createTRPCRouter({
 
         return acc + (isNaN(price) ? 0 : price);
       }, 0);
-
-
 
       return {
         ...data,

@@ -70,8 +70,6 @@ export const productsRouter = createTRPCRouter({
         },
       });
 
-
-
       const reviewRating =
         reviews.docs.length > 0
           ? Number(
@@ -115,10 +113,8 @@ export const productsRouter = createTRPCRouter({
             }).format((count / reviews.totalDocs) * 100),
           );
         });
-
       }
 
- 
       return {
         ...product,
         isPurchased,
@@ -132,6 +128,7 @@ export const productsRouter = createTRPCRouter({
   getMany: baseProcedure
     .input(
       z.object({
+        search: z.string().nullish(),
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_LIMIT),
         categorySlug: z.string().nullish(),
@@ -149,7 +146,6 @@ export const productsRouter = createTRPCRouter({
         },
       };
 
-
       let sort: Sort = "-createdAt";
 
       if (input.sort === "curated") {
@@ -161,7 +157,6 @@ export const productsRouter = createTRPCRouter({
       if (input.sort === "trending") {
         sort = "-createdAt";
       }
-
 
       if (input.minPrice && input.maxPrice) {
         where.price = {
@@ -200,8 +195,6 @@ export const productsRouter = createTRPCRouter({
           },
         });
 
-
-
         const formattedData = categoriesData.docs.map((doc) => ({
           ...doc,
           subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
@@ -232,6 +225,12 @@ export const productsRouter = createTRPCRouter({
         };
       }
 
+      if (input.search) {
+        where["name"] = {
+          like: input.search,
+        };
+      }
+
       const data = await ctx.db.find({
         collection: "products",
         depth: 2,
@@ -243,7 +242,6 @@ export const productsRouter = createTRPCRouter({
           content: false,
         },
       });
-   
 
       const dataWithSummariedReviews = await Promise.all(
         data.docs.map(async (doc) => {
@@ -256,8 +254,6 @@ export const productsRouter = createTRPCRouter({
               },
             },
           });
-
-
 
           return {
             ...doc,
@@ -280,7 +276,6 @@ export const productsRouter = createTRPCRouter({
           };
         }),
       );
-
 
       return {
         ...data,

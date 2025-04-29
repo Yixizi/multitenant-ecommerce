@@ -10,6 +10,11 @@ export const sortValues = ["curated", "trending", "hot_and_new"] as const;
 const params = {
   sort: parseAsStringLiteral(sortValues).withDefault("curated"),
 
+  search: parseAsString
+    .withOptions({
+      clearOnDefault: true,
+    })
+    .withDefault(""),
   minPrice: parseAsString
     .withOptions({
       clearOnDefault: true,

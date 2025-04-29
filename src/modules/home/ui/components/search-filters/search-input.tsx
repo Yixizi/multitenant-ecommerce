@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useProductFilters } from "@/modules/products/hooks/use-product-filters";
 
 interface Props {
   disabled?: boolean;
 }
 
 const SearchInput = ({ disabled }: Props) => {
+  const [filters, setFilters] = useProductFilters();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const trpc = useTRPC();
@@ -25,7 +27,13 @@ const SearchInput = ({ disabled }: Props) => {
 
       <div className=" relative w-full">
         <SearchIcon className=" absolute left-3 top-1/2 -translate-y-1/2 size-4 text-neutral-500" />
-        <Input className=" pl-8" placeholder="搜索产品" disabled={disabled} />
+        <Input
+          className=" pl-8"
+          placeholder="搜索产品"
+          disabled={disabled}
+          value={filters.search}
+          onChange={(e) => setFilters({ search: e.target.value })}
+        />
       </div>
       <Button
         disabled={disabled}
@@ -49,3 +57,6 @@ const SearchInput = ({ disabled }: Props) => {
 };
 
 export default SearchInput;
+
+
+// export const 

@@ -60,7 +60,7 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
               name={product.name}
               key={product.id}
               id={product.id}
-              // imageUrl={product.image?.url}
+              imageUrl={product.image?.url}
               tenantSlug={product.tenant.slug}
               tenantName={product.tenant.name}
               tenantImageUrl={product.tenant.image?.url}

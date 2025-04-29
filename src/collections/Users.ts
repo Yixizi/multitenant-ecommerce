@@ -2,7 +2,6 @@ import type { CollectionConfig } from "payload";
 import { tenantsArrayField } from "@payloadcms/plugin-multi-tenant/fields";
 import { isSuperAdmin } from "@/lib/access";
 
-
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: "tenants",
   tenantsCollectionSlug: "tenants",
@@ -36,13 +35,13 @@ export const Users: CollectionConfig = {
     hidden: ({ user }) => !isSuperAdmin(user),
   },
   auth: {
-    cookies:{
-      process.env.NODE_ENV !== "development" && {
+    cookies: {
+      ...(process.env.NODE_ENV !== "development" && {
         sameSite: "None",
         domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
         secure: process.env.NODE_ENV === "production",
-      },
-    }
+      }),
+    },
   },
 
   fields: [

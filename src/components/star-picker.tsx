@@ -20,7 +20,7 @@ const StarPicker: React.FC<StarPickerProps> = ({
   const [hoverValue, setHoverValue] = useState(0);
 
   const handleChange = (value: number) => {
-    console.log({ value });
+
     onChange?.(value);
   };
 

@@ -58,7 +58,7 @@ const SignUpView = () => {
   });
 
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    console.log(values);
+
     register.mutate(values);
   };
 

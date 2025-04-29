@@ -55,7 +55,7 @@ const SignInView = () => {
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    console.log(values);
+
     login.mutate(values);
   };
 

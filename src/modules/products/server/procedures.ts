@@ -34,7 +34,7 @@ export const productsRouter = createTRPCRouter({
           message: "产品未找到",
         });
       }
-      // console.log(JSON.stringify(product, null, 2));
+
       let isPurchased = false;
       if (session.user) {
         const orderData = await ctx.db.find({
@@ -70,7 +70,7 @@ export const productsRouter = createTRPCRouter({
         },
       });
 
-      // console.log(JSON.stringify(reviews, null, 2));
+
 
       const reviewRating =
         reviews.docs.length > 0
@@ -115,10 +115,10 @@ export const productsRouter = createTRPCRouter({
             }).format((count / reviews.totalDocs) * 100),
           );
         });
-        // console.log(ratingDistribution);
+
       }
 
-      // console.log(ratingDistribution);
+ 
       return {
         ...product,
         isPurchased,
@@ -149,7 +149,6 @@ export const productsRouter = createTRPCRouter({
         },
       };
 
-      // console.log(input, "----------");
 
       let sort: Sort = "-createdAt";
 
@@ -162,7 +161,7 @@ export const productsRouter = createTRPCRouter({
       if (input.sort === "trending") {
         sort = "-createdAt";
       }
-      // console.log(sort);
+
 
       if (input.minPrice && input.maxPrice) {
         where.price = {
@@ -201,7 +200,7 @@ export const productsRouter = createTRPCRouter({
           },
         });
 
-        // console.log(JSON.stringify(categoriesData, null, 2));
+
 
         const formattedData = categoriesData.docs.map((doc) => ({
           ...doc,
@@ -244,7 +243,7 @@ export const productsRouter = createTRPCRouter({
           content: false,
         },
       });
-      // console.log(JSON.stringify(data, null, 2));
+   
 
       const dataWithSummariedReviews = await Promise.all(
         data.docs.map(async (doc) => {
@@ -258,7 +257,7 @@ export const productsRouter = createTRPCRouter({
             },
           });
 
-          // console.log(doc.id, JSON.stringify(reviewsData, null, 2));
+
 
           return {
             ...doc,
@@ -281,7 +280,7 @@ export const productsRouter = createTRPCRouter({
           };
         }),
       );
-      // console.log(JSON.stringify(dataWithSummariedReviews, null, 2));
+
 
       return {
         ...data,

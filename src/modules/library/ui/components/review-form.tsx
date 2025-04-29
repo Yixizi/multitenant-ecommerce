@@ -72,7 +72,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ productId, initialData }) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+
     if (initialData) {
       updateReview.mutate({
         reviewId: initialData.id,

@@ -4,12 +4,12 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
 
   const hostname = request.headers.get("host") || "";
-  console.log(hostname, url, 1111);
+
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "";
 
   if (hostname.endsWith(`.${rootDomain}`)) {
     const tenantSlug = hostname.replace(`.${rootDomain}`, "");
-    console.log(tenantSlug, rootDomain, request.url, 222);
+
 
     return NextResponse.rewrite(
       new URL(`/tenants/${tenantSlug}${url.pathname}`, request.url),

@@ -85,7 +85,7 @@ export const checkoutRouter = createTRPCRouter({
         },
       });
 
-      console.log(products.totalDocs, input.productIds.length);
+
 
       if (products.totalDocs !== input.productIds.length) {
         throw new TRPCError({ code: "NOT_FOUND", message: "有产品未找到" });
@@ -211,14 +211,13 @@ export const checkoutRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND", message: "产品未找到" });
       }
 
-      // console.log(JSON.stringify(data, null, 2));
       const totalPrice = data.docs.reduce((acc, product) => {
         const price = Number(product.price);
 
         return acc + (isNaN(price) ? 0 : price);
       }, 0);
 
-      // console.log(data.totalDocs);
+
 
       return {
         ...data,

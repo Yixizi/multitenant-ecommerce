@@ -44,7 +44,7 @@ export const ProductList = ({ category, tenantSlug, narrowView }: Props) => {
     );
   }
 
-  // console.log(JSON.stringify(data, null, 2));
+
   return (
     <>
       <div

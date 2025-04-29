@@ -36,7 +36,7 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
   const { data } = useSuspenseQuery(
     trpc.products.getOne.queryOptions({ id: productId }),
   );
-  console.log("1");
+
   return (
     <div className=" px-4 lg:px-12 py-10">
       <div className=" border rounded-sm bg-white overflow-hidden">

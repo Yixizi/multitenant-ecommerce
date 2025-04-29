@@ -34,7 +34,7 @@ export const libraryRouter = createTRPCRouter({
         },
       });
 
-      // console.log(JSON.stringify(data, null, 2));
+   
       const order = ordersData.docs[0];
 
       if (!order) {
@@ -79,7 +79,7 @@ export const libraryRouter = createTRPCRouter({
         },
       });
 
-      // console.log(JSON.stringify(data, null, 2));
+ 
       const productIds = ordersData.docs.map((order) => order.product);
 
       const productsData = await ctx.db.find({

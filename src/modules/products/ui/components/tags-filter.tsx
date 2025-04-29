@@ -18,7 +18,7 @@ export const TagsFilter = ({ value, onChange }: Props) => {
         { limit: DEFAULT_LIMIT },
         {
           getNextPageParam: (lastPage) => {
-            // console.log(lastPage);
+        
             return lastPage.docs.length > 0 ? lastPage.nextPage : undefined;
           },
         },

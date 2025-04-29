@@ -29,7 +29,6 @@ export const tenantsRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND", message: "未找到租户" });
       }
 
-    //   console.log(JSON.stringify(tenant, null, 2));
       return tenant as Tenant & { image: Media | null };
     }),
 });

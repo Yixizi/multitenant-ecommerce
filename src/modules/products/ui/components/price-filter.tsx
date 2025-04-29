@@ -42,13 +42,13 @@ export const PriceFilter = ({
   const [maxPriceInput, setMaxPriceInput] = useState(maxPrice ?? "");
   const handleMinPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/[^0-9.]/g, "");
-    // console.log(numericValue);
+
     setMinPriceInput(numericValue);
     onMinPriceChange(numericValue);
   };
   const handleMaxPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/[^0-9.]/g, "");
-    // console.log(numericValue);
+
     setMaxPriceInput(numericValue);
     onMaxPriceChange(numericValue);
   };

@@ -64,7 +64,7 @@ export const Products: CollectionConfig = {
       type: "text",
       admin: {
         description:
-          "此内容仅在购买后可见,添加产品信息,可下载的文件，获取指导以及额外的材料，支持Markdown转换",
+          "此内容仅在购买后可见,添加产品信息，获取指导以及额外的材料",
       },
     },
     {

@@ -21,7 +21,7 @@ const ProductView = ({ productId }: Props) => {
   return (
     <div className=" min-h-screen bg-white">
       <nav className=" p-4 bg-[#f4f4f0] w-full border-b">
-        <Link prefetch href={"/library"} className=" flex items-center gap-2">
+        <Link  href={"/library"} className=" flex items-center gap-2">
           <ArrowLeftIcon className="size-4" />
           <span className=" text font-medium ">回到账单库列表</span>
         </Link>
@@ -64,7 +64,7 @@ export const ProductViewSkeleton = () => {
   return (
     <div className=" min-h-screen bg-white">
       <nav className=" p-4 bg-[#f4f4f0] w-full border-b">
-        <Link prefetch href={"/library"} className=" flex items-center gap-2">
+        <Link  href={"/library"} className=" flex items-center gap-2">
           <ArrowLeftIcon className="size-4" />
           <span className=" text font-medium ">回到账单库列表</span>
         </Link>

@@ -66,7 +66,7 @@ const ProductView = ({ productId, tenantSlug }: ProductViewProps) => {
 
               <div className=" px-6 py-4 flex items-center justify-center lg:border-r">
                 <Link
-                prefetch
+                
                   href={generateTenantURL(tenantSlug)}
                   className=" flex items-center gap-2"
                 >

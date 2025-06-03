@@ -40,7 +40,7 @@ const TenantsNavbar = ({ slug }: Props) => {
     <div className=" h-20 border-b font-medium bg-white">
       <div className=" max-w-(--breakpoint-xl)  mx-auto flex justify-between items-center h-full px-4 lg:px-12">
         <Link
-        prefetch
+        
           href={generateTenantURL(slug)}
           className=" flex items-center gap-2"
         >

@@ -74,7 +74,7 @@ const SignUpView = () => {
             className=" flex flex-col gap-8 p-4 lg:px-16"
           >
             <div className=" flex items-center justify-between mb-8">
-              <Link prefetch href={"/"}>
+              <Link  href={"/"}>
                 <span
                   className={cn("text-2xl font-semibold", poppins.className)}
                 >
@@ -88,7 +88,7 @@ const SignUpView = () => {
                 size={"sm"}
                 variant={"ghost"}
               >
-                <Link prefetch href={"/sign-in"}>
+                <Link  href={"/sign-in"}>
                   登录
                 </Link>
               </Button>

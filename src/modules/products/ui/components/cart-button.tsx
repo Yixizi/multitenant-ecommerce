@@ -19,7 +19,7 @@ export const CartButton = ({ tenantSlug, productId, isPurchased }: Props) => {
         asChild
         className=" flex-1 font-medium bg-white-400"
       >
-        <Link prefetch href={`/library/${productId}`}>进入账单库</Link>
+        <Link  href={`/library/${productId}`}>进入账单库</Link>
       </Button>
     );
   }

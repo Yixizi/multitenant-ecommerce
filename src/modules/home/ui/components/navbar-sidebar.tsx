@@ -35,7 +35,7 @@ export const NavbarSidebar = ({
           {items.map((item) => {
             return (
               <Link
-              prefetch
+              
                 onClick={() => onOpenChange(false)}
                 key={item.href}
                 href={item.href}
@@ -51,14 +51,14 @@ export const NavbarSidebar = ({
               <Link
                 className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
                 href="/admin"
-                prefetch
+                
               >
                 仪表盘
               </Link>
             ) : (
               <>
                 <Link
-                  prefetch
+                  
                   href={"/sign-in"}
                   onClick={() => onOpenChange(false)}
                   className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
@@ -66,7 +66,7 @@ export const NavbarSidebar = ({
                   登入
                 </Link>
                 <Link
-                  prefetch
+                  
                   onClick={() => onOpenChange(false)}
                   href={"/sign-up"}
                   className="flex w-full text-left p-4 hover:bg-black hover:text-white items-center text-base font-medium"
